@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>俄罗斯方块</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+
+<body>
+    <div>
+        操作说明：请使用方向键和空格键操作，上->旋转，左->左移，右->右移，下->下移，空格->坠落<br/>
+        计分说明：一次消1行100分，一次消2行200分，一次消3行400分，一次消4行800分 <br/>
+        游戏说明：热血俄罗斯方块，每15秒后底部自动随机生成一栏,玩家消除两行以上会给对手随机生成一栏！
+    </div>
+    <div class="square" id="local">
+        <div class="title">我的游戏区域</div>
+            <div class="game" id="local_game"></div>
+            <div class="next" id="local_next"></div>
+            <div class="info">
+                <div>已用时:
+                    <span id="local_time">0</span>s
+                </div>
+                <div>已得分:
+                    <span id="local_score">0</span>分
+                </div>
+                
+                <div><span id="local_gameOver"></span></div>
+            </div>
+    </div>
+    <div class="square" id="remote">
+            <div class="title">对手游戏区域</div>
+                <div class="game" id="remote_game"></div>
+                <div class="next" id="remote_next"></div>
+                <div class="info">
+                    <div>已用时:
+                        <span id="remote_time">0</span>s
+                    </div>
+                    <div>已得分:
+                        <span id="remote_score">0</span>分
+                    </div>
+                    
+                    <div><span id="remote_gameOver"></span></div>
+                </div>
+        </div>
+   
+</body>
+<script src="./js/square.js"></script>
+<script src="./js/squareFactory.js"></script>
+<script src="./js/game.js"></script>
+<script src="./js/local.js"></script>
+<script src="./js/remote.js"></script>
+<script src="./js/script.js"></script>
+
+</html>

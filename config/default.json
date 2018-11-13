@@ -1,0 +1,7 @@
+{
+    "gameWidth": 200,
+    "gameHeight": 400,
+    "squareWidth": 20,
+    "squareHeight": 20,
+    "squareNum": 4
+}
