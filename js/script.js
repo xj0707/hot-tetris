@@ -1,4 +1,4 @@
 let local = new Local()
 local.start()
-let remote=new remote()
+let remote=new Remote()
 remote.start()

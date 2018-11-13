@@ -1,4 +1,4 @@
-class Local {
+class Remote {
     constructor() {
         this.time = 500
         this.timer = null
