@@ -18,12 +18,8 @@ class Game {
         }
     }
     init(doms, obj1, obj2) {
-        console.log('cur',obj1.curSquare, obj1.curPostion)
         this.cur = new SquareFactory().getSquare(obj1.curSquare, obj1.curPostion)        //当前的方块
-        console.log('cur',this.cur)
-        console.log('next',obj2.nexSquare, obj2.nexPostion)
         this.next = new SquareFactory().getSquare(obj2.nexSquare, obj2.nexPostion)        //下一次的方块
-        console.log('next',this.next)
         this.timeDiv = doms.timeDiv
         this.scoreDiv = doms.scoreDiv
         this.resultDiv = doms.gameOverDiv
@@ -88,7 +84,6 @@ class Game {
     }
     //设置积分
     addScore(line) {
-        console.log(line)
         let score = 0
         switch (line) {
             case 1:
