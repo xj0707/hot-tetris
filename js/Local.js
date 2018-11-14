@@ -35,6 +35,12 @@ class Local {
             document.getElementById('remote_gameOver').innerHTML = '已掉线'
             this.stop()
         })
+        //底部增加干扰监听
+        this.socket.on('bottomLines', (data) => {
+            this.game.addBottomLine(data.lines)
+            //给对方同步一下
+            this.socket.emit('addBottomLines', data)
+        })
     }
     //开始
     start() {
@@ -57,6 +63,11 @@ class Local {
                 if (line) {
                     this.game.addScore(line)
                     this.socket.emit('line', { line })
+                    //给对方增加干扰
+                    if (line > 1) {
+                        let lines = this.game.generatelines(1)
+                        this.socket.emit('bottomLines', { lines })
+                    }
                 }
                 if (this.game.checkGameOver()) {
                     this.game.gameOver(false)
@@ -82,10 +93,12 @@ class Local {
             this.count += 1
             this.game.setTime(this.count)
             this.socket.emit('time', { count: this.count })
-            // if (this.count % 15 == 0) {
-            //     let lines = this.game.generatelines(1)
-            //     this.game.addBottomLine(lines)
-            // }
+            //自动增加底部干扰
+            if (this.count % 15 == 0) {
+                let lines = this.game.generatelines(1)
+                this.socket.emit('autoLines', { lines })
+                this.game.addBottomLine(lines)
+            }
         }
     }
     //停止

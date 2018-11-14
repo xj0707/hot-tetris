@@ -40,6 +40,9 @@ io.on('connection', function (socket) {
     bindListtener(socket, 'line')
     bindListtener(socket, 'time')
     bindListtener(socket, 'lose')
+    bindListtener(socket, 'bottomLines')
+    bindListtener(socket, 'addBottomLines')
+    bindListtener(socket, 'autoLines')
 
     socket.on('disconnect', function () {
         clientCount--
