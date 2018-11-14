@@ -1,41 +1,57 @@
 //其他人类
 class Remote {
-    constructor() {
+    constructor(socket) {
         this.time = 500
         this.timer = null
-        this.game = null
+        this.game = new Game()
         this.timeCount = 0
         this.count = 0
-    }
-    //开始
-    start() {
-        let doms = {
+        this.socket = socket
+        this.doms = {
             gameDiv: document.getElementById('remote_game'),
             nextDiv: document.getElementById('remote_next'),
             timeDiv: document.getElementById('remote_time'),
             scoreDiv: document.getElementById('remote_score'),
             gameOverDiv: document.getElementById('remote_gameOver')
         }
-        this.game = new Game()
-        this.game.init(doms, Math.ceil(Math.random() * 7), Math.ceil(Math.random() * 7))
+        this.socket.on('start', (data) => {
+            this.doms.gameOverDiv.style.color = 'green'
+            this.doms.gameOverDiv.innerHTML = data.message
+            this.emit()
+        })
+    }
+    //socket 驱动显示对方的游戏情况
+    emit() {
+        this.socket.on('init', (data) => {
+            this.game.init(this.doms, data.curSquare, data.nexSquare)
+        })
+        this.socket.on('next', (data) => {
+            this.game.performNext(data.squareIndex)
+        })
+    }
+    //开始
+    start(curSquare, nexSquare) {
+
+        this.game.init(this.doms, curSquare, nexSquare)
         this.bindKeyEvent()
-        this.timer = setInterval(() => {
-            this.timeFun()
-            if (!this.game.down()) {
-                this.game.fixed()
-                let line = this.game.checkClear()
-                if (line) {
-                    console.log(line)
-                    this.game.addScore(line)
-                }
-                if (this.game.checkGameOver()) {
-                    this.game.gameOver(false)
-                    this.stop()
-                } else {
-                    this.game.performNext(Math.ceil(Math.random() * 7))
-                }
-            }
-        }, this.time)
+        // this.timer = setInterval(() => {
+        //     this.timeFun()
+        //     if (!this.game.down()) {
+        //         this.game.fixed()
+        //         let line = this.game.checkClear()
+        //         if (line) {
+        //             console.log(line)
+        //             this.game.addScore(line)
+        //         }
+        //         if (this.game.checkGameOver()) {
+        //             this.game.gameOver(false)
+        //             this.stop()
+        //         } else {
+        //             let suqareIndex = Math.ceil(Math.random() * 7)
+        //             this.game.performNext(suqareIndex)
+        //         }
+        //     }
+        // }, this.time)
     }
     //时间计时
     timeFun(doms) {
@@ -60,18 +76,6 @@ class Remote {
     }
     //绑定键盘事件
     bindKeyEvent() {
-        document.onkeydown = (e) => {
-            if (e.keyCode == 38) {  //up
-                this.game.rotate()
-            } else if (e.keyCode == 39) {  //right
-                this.game.right()
-            } else if (e.keyCode == 40) {  //down
-                this.game.down()
-            } else if (e.keyCode == 37) {  //left
-                this.game.left()
-            } else if (e.keyCode == 32) {  //space
-                this.game.fall()
-            }
-        }
+
     }
 }

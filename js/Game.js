@@ -25,8 +25,8 @@ class Game {
         this.resultDiv = doms.gameOverDiv
         this.initDiv(doms.gameDiv, this.gameData, this.gameDivs)  //初始化game中div
         this.initDiv(doms.nextDiv, this.next.data, this.nextDivs)      //初始化next中div
-        // this.setData()
-        // this.refreshDiv(this.gameData, this.gameDivs)             //刷新game中div
+        this.setData()
+        this.refreshDiv(this.gameData, this.gameDivs)             //刷新game中div
         this.refreshDiv(this.next.data, this.nextDivs)                 //刷新next中div
     }
     //数据合法性检查
@@ -179,6 +179,7 @@ class Game {
     //使用下一个方块
     performNext(num) {
         this.cur = this.next
+        console.log(num)
         this.next = new SquareFactory().getSquare(num)
         this.refreshDiv(this.gameData, this.gameDivs)
         this.refreshDiv(this.next.data, this.nextDivs)
