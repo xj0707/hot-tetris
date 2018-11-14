@@ -50,6 +50,12 @@ class Remote {
             this.game.checkClear()
             this.game.addScore(data.line)
         })
+        this.socket.on('time', (data) => {
+            this.game.setTime(data.count)
+        })
+        this.socket.on('lose', (data) => {
+            this.game.gameOver(false)
+        })
     }
     //开始
     // start(curSquare, nexSquare) {

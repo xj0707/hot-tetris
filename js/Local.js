@@ -20,6 +20,21 @@ class Local {
             this.doms.gameOverDiv.innerHTML = data.message
             this.start()
         })
+        //游戏结束监听
+        this.socket.on('lose', (data) => {
+            this.game.gameOver(true)
+            // this.doms.gameOverDiv.style.color = 'green'
+            // this.doms.gameOverDiv.innerHTML = data.message
+            this.stop()
+        })
+        //掉线监听
+        this.socket.on('leave', (data) => {
+            this.doms.gameOverDiv.style.color = 'red'
+            this.doms.gameOverDiv.innerHTML = '对方掉线'
+            document.getElementById('remote_gameOver').style.color = 'red'
+            document.getElementById('remote_gameOver').innerHTML = '已掉线'
+            this.stop()
+        })
     }
     //开始
     start() {
@@ -45,12 +60,14 @@ class Local {
                 }
                 if (this.game.checkGameOver()) {
                     this.game.gameOver(false)
+                    document.getElementById('remote_gameOver').innerHTML = '你赢了'
+                    this.socket.emit('lose')
                     this.stop()
                 } else {
                     let squareIndex = Math.ceil(Math.random() * 7)
                     let squarePostion = Math.floor(Math.random() * 4)
                     this.game.performNext(squareIndex, squarePostion)
-                    this.socket.emit('next', { squareIndex ,squarePostion})
+                    this.socket.emit('next', { squareIndex, squarePostion })
                 }
             } else {
                 this.socket.emit('down')
@@ -58,12 +75,13 @@ class Local {
         }, this.time)
     }
     //时间计时
-    timeFun(doms) {
+    timeFun() {
         this.timeCount += 1
         if (this.timeCount == 2) {
             this.timeCount = 0
             this.count += 1
             this.game.setTime(this.count)
+            this.socket.emit('time', { count: this.count })
             // if (this.count % 15 == 0) {
             //     let lines = this.game.generatelines(1)
             //     this.game.addBottomLine(lines)

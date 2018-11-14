@@ -21,7 +21,11 @@ io.on('connection', function (socket) {
     } else {
         socket.emit('start', { message: '游戏开始' })
         //告诉另外的客服端 游戏开始了
-        socketMap[clientCount - 1].emit('start', { message: '游戏开始' })
+        if (socketMap[clientCount - 1]) {
+            socketMap[clientCount - 1].emit('start', { message: '游戏开始' })
+        } else {
+            socket.emit('leave')
+        }
     }
     //监听初始开始游戏
     bindListtener(socket, 'init')
@@ -34,11 +38,22 @@ io.on('connection', function (socket) {
     bindListtener(socket, 'fall')
     bindListtener(socket, 'fixed')
     bindListtener(socket, 'line')
-
+    bindListtener(socket, 'time')
+    bindListtener(socket, 'lose')
 
     socket.on('disconnect', function () {
         clientCount--
         console.log(`一个客服端已经离开${clientCount}`)
+        if (socket.clientNum % 2 == 0) {
+            if (socketMap[socket.clientNum - 1]) {
+                socketMap[socket.clientNum - 1].emit('leave')
+            }
+        } else {
+            if (socketMap[socket.clientNum + 1]) {
+                socketMap[socket.clientNum + 1].emit('leave')
+            }
+        }
+        delete socketMap[socket.clientNum]
     })
     console.log(`当前连接的客服端数量为${clientCount}`)
 })
@@ -46,9 +61,13 @@ io.on('connection', function (socket) {
 function bindListtener(socket, event) {
     socket.on(event, function (data) {
         if (socket.clientNum % 2 == 0) {
-            socketMap[socket.clientNum - 1].emit(event, data)
+            if (socketMap[socket.clientNum - 1]) {
+                socketMap[socket.clientNum - 1].emit(event, data)
+            }
         } else {
-            socketMap[socket.clientNum + 1].emit(event, data)
+            if (socketMap[socket.clientNum + 1]) {
+                socketMap[socket.clientNum + 1].emit(event, data)
+            }
         }
     })
 }
