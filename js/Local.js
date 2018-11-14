@@ -1,4 +1,5 @@
-class Local {
+//当前类
+class Local {   
     constructor() {
         this.time = 500
         this.timer = null

@@ -1,3 +1,4 @@
+//其他人类
 class Remote {
     constructor() {
         this.time = 500
