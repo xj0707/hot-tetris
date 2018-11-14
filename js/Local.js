@@ -23,10 +23,12 @@ class Local {
     }
     //开始
     start() {
-        let curSquare = Math.ceil(Math.random() * 7)
-        let nexSquare = Math.ceil(Math.random() * 7)
-        this.game.init(this.doms, curSquare, nexSquare)
-        this.socket.emit('init', { curSquare, nexSquare })
+        let curSquare = Math.ceil(Math.random() * 7)  //当前方块
+        let nexSquare = Math.ceil(Math.random() * 7)  //下一个方块
+        let curPostion = Math.floor(Math.random() * 4) //当前方块选择角度
+        let nexPostion = Math.floor(Math.random() * 4)   //下个方块旋转角度
+        this.game.init(this.doms, { curSquare, curPostion }, { nexSquare, nexPostion })
+        this.socket.emit('init', { cur: { curSquare, curPostion }, next: { nexSquare, nexPostion } })
         this.bindKeyEvent()
         // let squareIndex = Math.ceil(Math.random() * 7)
         // this.game.performNext(squareIndex)
@@ -35,18 +37,23 @@ class Local {
             this.timeFun()
             if (!this.game.down()) {
                 this.game.fixed()
+                this.socket.emit('fixed')
                 let line = this.game.checkClear()
                 if (line) {
                     this.game.addScore(line)
+                    this.socket.emit('line', { line })
                 }
                 if (this.game.checkGameOver()) {
                     this.game.gameOver(false)
                     this.stop()
                 } else {
                     let squareIndex = Math.ceil(Math.random() * 7)
-                    this.game.performNext(squareIndex)
-                    this.socket.emit('next', { squareIndex })
+                    let squarePostion = Math.floor(Math.random() * 4)
+                    this.game.performNext(squareIndex, squarePostion)
+                    this.socket.emit('next', { squareIndex ,squarePostion})
                 }
+            } else {
+                this.socket.emit('down')
             }
         }, this.time)
     }
@@ -76,14 +83,19 @@ class Local {
         document.onkeydown = (e) => {
             if (e.keyCode == 38) {  //up
                 this.game.rotate()
+                this.socket.emit('rotate')
             } else if (e.keyCode == 39) {  //right
                 this.game.right()
+                this.socket.emit('right')
             } else if (e.keyCode == 40) {  //down
                 this.game.down()
+                this.socket.emit('down')
             } else if (e.keyCode == 37) {  //left
                 this.game.left()
+                this.socket.emit('left')
             } else if (e.keyCode == 32) {  //space
                 this.game.fall()
+                this.socket.emit('fall')
             }
         }
     }

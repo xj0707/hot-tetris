@@ -1,6 +1,6 @@
 //构造七种方块
 class SquareFactory {
-    square1() {
+    square1(postion) {
         let data = [
             [0, 2, 0, 0],
             [0, 2, 0, 0],
@@ -34,10 +34,9 @@ class SquareFactory {
                 [0, 0, 0, 0]
             ]
         ]
-        let postion = Math.floor(Math.random() * 4)
         return new Square(data, rotates, postion)
     }
-    square2() {
+    square2(postion) {
         let data = [
             [0, 2, 0, 0],
             [2, 2, 2, 0],
@@ -71,10 +70,9 @@ class SquareFactory {
                 [0, 0, 0, 0]
             ]
         ]
-        let postion = Math.floor(Math.random() * 4)
         return new Square(data, rotates, postion)
     }
-    square3() {
+    square3(postion) {
         let data = [
             [2, 2, 2, 0],
             [0, 0, 2, 0],
@@ -108,10 +106,9 @@ class SquareFactory {
                 [0, 0, 0, 0]
             ]
         ]
-        let postion = Math.floor(Math.random() * 4)
         return new Square(data, rotates, postion)
     }
-    square4() {
+    square4(postion) {
         let data = [
             [2, 2, 0, 0],
             [0, 2, 2, 0],
@@ -145,10 +142,9 @@ class SquareFactory {
                 [0, 0, 0, 0]
             ]
         ]
-        let postion = Math.floor(Math.random() * 4)
         return new Square(data, rotates, postion)
     }
-    square5() {
+    square5(postion) {
         let data = [
             [2, 2, 0, 0],
             [2, 2, 0, 0],
@@ -182,10 +178,9 @@ class SquareFactory {
                 [0, 0, 0, 0]
             ]
         ]
-        let postion = Math.floor(Math.random() * 4)
         return new Square(data, rotates, postion)
     }
-    square6() {
+    square6(postion) {
         let data = [
             [0, 2, 2, 0],
             [2, 2, 0, 0],
@@ -219,10 +214,9 @@ class SquareFactory {
                 [0, 0, 0, 0]
             ]
         ]
-        let postion = Math.floor(Math.random() * 4)
         return new Square(data, rotates, postion)
     }
-    square7() {
+    square7(postion) {
         let data = [
             [2, 2, 0, 0],
             [2, 0, 0, 0],
@@ -256,31 +250,30 @@ class SquareFactory {
                 [0, 0, 0, 0]
             ]
         ]
-        let postion = Math.floor(Math.random() * 4)
         return new Square(data, rotates, postion)
     }
-    getSquare(num) {
+    getSquare(num, postion) {
         switch (num) {
             case 1:
-                return this.square1()
+                return this.square1(postion)
                 break;
             case 2:
-                return this.square2()
+                return this.square2(postion)
                 break;
             case 3:
-                return this.square3()
+                return this.square3(postion)
                 break;
             case 4:
-                return this.square4()
+                return this.square4(postion)
                 break;
             case 5:
-                return this.square5()
+                return this.square5(postion)
                 break;
             case 6:
-                return this.square6()
+                return this.square6(postion)
                 break;
             case 7:
-                return this.square7()
+                return this.square7(postion)
                 break;
         }
     }

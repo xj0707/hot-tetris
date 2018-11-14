@@ -17,16 +17,20 @@ class Game {
             this.gameData.push(gameArr)
         }
     }
-    init(doms, num1, num2) {
-        this.cur = new SquareFactory().getSquare(num1)        //当前的方块
-        this.next = new SquareFactory().getSquare(num2)        //下一次的方块
+    init(doms, obj1, obj2) {
+        console.log('cur',obj1.curSquare, obj1.curPostion)
+        this.cur = new SquareFactory().getSquare(obj1.curSquare, obj1.curPostion)        //当前的方块
+        console.log('cur',this.cur)
+        console.log('next',obj2.nexSquare, obj2.nexPostion)
+        this.next = new SquareFactory().getSquare(obj2.nexSquare, obj2.nexPostion)        //下一次的方块
+        console.log('next',this.next)
         this.timeDiv = doms.timeDiv
         this.scoreDiv = doms.scoreDiv
         this.resultDiv = doms.gameOverDiv
-        this.initDiv(doms.gameDiv, this.gameData, this.gameDivs)  //初始化game中div
+        this.initDiv(doms.gameDiv, this.gameData, this.gameDivs)        //初始化game中div
         this.initDiv(doms.nextDiv, this.next.data, this.nextDivs)      //初始化next中div
-        this.setData()
-        this.refreshDiv(this.gameData, this.gameDivs)             //刷新game中div
+        // this.setData()
+        // this.refreshDiv(this.gameData, this.gameDivs)             //刷新game中div
         this.refreshDiv(this.next.data, this.nextDivs)                 //刷新next中div
     }
     //数据合法性检查
@@ -177,10 +181,9 @@ class Game {
         while (this.down()) { }
     }
     //使用下一个方块
-    performNext(num) {
+    performNext(num, position) {
         this.cur = this.next
-        console.log(num)
-        this.next = new SquareFactory().getSquare(num)
+        this.next = new SquareFactory().getSquare(num, position)
         this.refreshDiv(this.gameData, this.gameDivs)
         this.refreshDiv(this.next.data, this.nextDivs)
     }
@@ -242,7 +245,7 @@ class Game {
     generatelines(lineNum) {
         let lines = []
         for (let i = 0; i < lineNum; i++) {
-            let line=[]
+            let line = []
             for (let j = 0; j < 10; j++) {
                 line.push(Math.round(Math.random()))
             }

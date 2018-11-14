@@ -24,21 +24,16 @@ io.on('connection', function (socket) {
         socketMap[clientCount - 1].emit('start', { message: '游戏开始' })
     }
     //监听初始开始游戏
-    socket.on('init', function (data) {
-        if (socket.clientNum % 2 == 0) {
-            socketMap[socket.clientNum - 1].emit('init', data)
-        } else {
-            socketMap[socket.clientNum + 1].emit('init', data)
-        }
-    })
+    bindListtener(socket, 'init')
     //监听下一个方块编号
-    socket.on('next', function (data) {
-        if (socket.clientNum % 2 == 0) {
-            socketMap[socket.clientNum - 1].emit('next', data)
-        } else {
-            socketMap[socket.clientNum + 1].emit('next', data)
-        }
-    })
+    bindListtener(socket, 'next')
+    bindListtener(socket, 'rotate')
+    bindListtener(socket, 'right')
+    bindListtener(socket, 'down')
+    bindListtener(socket, 'left')
+    bindListtener(socket, 'fall')
+    bindListtener(socket, 'fixed')
+    bindListtener(socket, 'line')
 
 
     socket.on('disconnect', function () {
@@ -47,3 +42,13 @@ io.on('connection', function (socket) {
     })
     console.log(`当前连接的客服端数量为${clientCount}`)
 })
+
+function bindListtener(socket, event) {
+    socket.on(event, function (data) {
+        if (socket.clientNum % 2 == 0) {
+            socketMap[socket.clientNum - 1].emit(event, data)
+        } else {
+            socketMap[socket.clientNum + 1].emit(event, data)
+        }
+    })
+}
